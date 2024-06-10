@@ -1,46 +1,37 @@
-import requests
-import hashlib
-import urllib
-import random
-import json
+from requests import get
+from hashlib import md5
+from urllib.parse import quote
+from random import randint
+from json import loads
 
-version = "2.3.0609-Beta"
+version = "2.4.1.0610-Beta"
 
 appid = 'your_app_id'
 secretKey = 'your_secret_key'
 
 to = ["zh", "en", "yue", "wyw", "jp", "kor", "fra", "spa", "th", "ara", "ru", "pt", "de", "it", "el", "nl", "pl", "bul",
-    "est", "dan", "fin", "cs", "rom", "slo", "swe", "hu", "cht", "vie"]
+        "est", "dan", "fin", "cs", "rom", "slo", "swe", "hu", "cht", "vie"]
 
 def getURL(toLang, q):
-    myurl = 'https://fanyi-api.baidu.com/api/trans/vip/translate'
-    fromLang = 'auto'
-    salt = random.randint(32768, 65536)
-    sign = appid + q + str(salt) + secretKey
-    sign = hashlib.md5(sign.encode()).hexdigest()
-    return myurl + '?appid=' + appid + '&q=' + urllib.parse.quote(q) + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(salt) + '&sign=' + sign
-def getResult(s):
+    salt = str(randint(32768, 65536))
+    return f"https://fanyi-api.baidu.com/api/trans/vip/translate?appid={appid}&q={quote(q)}&from=auto&to={toLang}" \
+            f"&salt={salt}&sign={md5((appid+q+salt+secretKey).encode()).hexdigest()}"
+def getResult(s, l, i):
     global query
-    rand = random.randint(0, 27)
-    URL = getURL(to[rand], s)
-    req = requests.get(URL)
-    res = json.loads(req.text)
-    query = res['trans_result'][0]['dst']
-    print(" [当前内容]", query)
+    query = loads(get(getURL(l, s)).text)["trans_result"][0]["dst"]
+    print(f" [第{i}次生草]", query)
 
 def main():
-    print(f"\n 百度生草机 {version}\n 作者B站主页 https://space.bilibili.com/1674232182")
-    query = input("\n 输入待生草的内容\n ")
+    query = input("\n 百度生草机 "+version+"\n 作者B站主页 https://space.bilibili.com/1674232182\n\n 输入待生草的内容\n ")
+    num = int(input(" 输入生草次数\n "))
     print("\n 一切就绪，开始生草！\n")
-    for i in range(20):
-        getResult(query)
-    res = requests.get(getURL('zh', query))
-    result = json.loads(res.text)['trans_result'][0]['dst']
-    print("\n"+"="*20+"生草结果"+"="*20+"\n "+result+"\n"+"="*48+"\n")
-    input(" 按下Enter键退出...\n")
+    for i in range(1, num):
+        getResult(query, to[randint(0, 27)], i)
+    getResult(query, "zh", num)
+    input("\n"+"="*20+"生草结果"+"="*20+"\n "+query+"\n"+"="*48+"\n\n 按下Enter键退出...\n")
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        input("\n"+"="*20+f"\n\n 程序出现错误！\n 报错信息如下\n {e}\n 请联系作者以解决问题！\n\n"+"="*20+"\n\n按下Enter键退出...\n")
+       input("\n"+"="*20+f"\n\n 程序出现错误！\n 报错信息如下\n {e}\n 请联系作者以解决问题！\n\n"+"="*20+"\n\n按下Enter键退出...\n")
