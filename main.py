@@ -1,7 +1,7 @@
 from requests import get
 from hashlib import md5
 from urllib.parse import quote
-from random import randint
+from random import randint, choice
 from json import loads
 
 version = "2.4.1.0610-Beta"
@@ -27,7 +27,7 @@ def main():
     num = int(input(" [输入生草次数]\n "))
     print("\n 一切就绪，开始生草！\n")
     for i in range(1, num):
-        getResult(query, to[randint(0, 27)], i)
+        getResult(query, choice(to), i)
     getResult(query, "zh", num)
     input("\n"+"-"*20+"生草结果"+"-"*20+"\n "+query+"\n"+"-"*48+"\n\n 按下Enter键退出...\n")
 
