@@ -22,6 +22,7 @@ def getResult(s, l, i):
     print(f" [第{i}次生草]", query)
 
 def main():
+    global query
     query = input("\n 百度生草机 "+version+"\n 作者B站主页 https://space.bilibili.com/1674232182\n\n 输入待生草的内容\n ")
     num = int(input(" 输入生草次数\n "))
     print("\n 一切就绪，开始生草！\n")
