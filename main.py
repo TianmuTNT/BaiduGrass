@@ -4,7 +4,7 @@ from random import randint, choice
 from json import loads
 from pyperclip import copy
 
-version = "2.6.3.0611-Beta"
+version = "2.6.4.0611-Beta"
 
 appid = 'your_app_id'
 secretKey = 'your_secret_key'
@@ -34,7 +34,7 @@ def multiInput(msg):
     lines = []
     while True:
         text = input(" > ")
-        if text == ".done":
+        if text == ".":
             break
         lines.append(text)
     return "\n".join(lines)
@@ -42,7 +42,7 @@ def multiInput(msg):
 def main():
     global query
     print("\n 百度生草机 "+version+"\n 作者B站主页 https://space.bilibili.com/1674232182\n\n ")
-    query = multiInput(" [输入待生草的内容，键入.done命令完成输入]")
+    query = multiInput(" [输入待生草的内容，键入“.”以完成输入]")
     num = int(input("\n [输入生草次数]\n "))
     print("\n 一切就绪，开始生草！")
     for i in range(1, num):
