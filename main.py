@@ -4,7 +4,7 @@ from random import randint, choice
 from json import loads
 from pyperclip import copy
 
-version = "2.6.4.0611-Beta"
+version = "2.6.5.0611-Beta"
 
 appid = 'your_app_id'
 secretKey = 'your_secret_key'
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        input("\n"+"="*20+"程序报错"+"="*20+f"\n\n {e}\n\n"+"="*48+"\n\n按下Enter键退出...\n")
+        input("\n"+"="*20+"程序报错"+"="*20+f"\n\n {e}\n\n"+"="*48+"\n\n 按下Enter键退出...\n")
