@@ -4,23 +4,23 @@ from random import randint, choice
 from json import loads
 from pyperclip import copy
 
-version = "2.6.5.0611-Beta"
+version = "2.8.3.0621-Beta"
 
-appid = 'your_app_id'
-secretKey = 'your_secret_key'
+appid = "your_app_id"
+secretKey = "your_secret_key"
 
 to = ["zh", "en", "yue", "wyw", "jp", "kor", "fra", "spa", "th", "ara", "ru", 
     "pt", "de", "it", "el", "nl", "pl", "bul", "est", "dan", "fin", "cs", 
     "rom", "slo", "swe", "hu", "cht", "vie"]
 
-def getParams(toLang, q):
-    salt = str(randint(32768, 65536))
-    return {"appid":appid,"q":q.encode(),"from":"auto","to":toLang,"salt":salt,
-            "sign":md5((appid+q+salt+secretKey).encode()).hexdigest()}
-def getResult(s, l, i):
+def getResult(lang, i):
     global query, qlist
-    res = loads(post("https://fanyi-api.baidu.com/api/trans/vip/translate", params=getParams(l, s), 
-            headers={'Content-Type':'application/x-www-form-urlencoded'}).text)["trans_result"]
+    salt = str(randint(32768, 65536))
+    url = "https://fanyi-api.baidu.com/api/trans/vip/translate"
+    params = {"appid":appid,"q":query.encode(),"from":"auto","to":lang,"salt":salt,
+            "sign":md5((appid+query+salt+secretKey).encode()).hexdigest()}
+    headers = {'Content-Type':'application/x-www-form-urlencoded'}
+    res = loads(post(url, params=params, headers=headers).text)["trans_result"]
     print(f"\n [第{i}次生草]")
     qlist = []
     for j in res:
@@ -43,11 +43,15 @@ def main():
     global query
     print("\n 百度生草机 "+version+"\n 作者B站主页 https://space.bilibili.com/1674232182\n\n ")
     query = multiInput(" [输入待生草的内容，键入“.”以完成输入]")
+    if query.strip() == "":
+        raise Exception("不可以输入为空！")
     num = int(input("\n [输入生草次数]\n "))
+    if num < 2 or num > 100:
+        raise Exception("不符合生草次数要求！（2~100）")
     print("\n 一切就绪，开始生草！")
     for i in range(1, num):
-        getResult(query, choice(to), i)
-    getResult(query, "zh", num)
+        getResult(choice(to), i)
+    getResult("zh", num)
     print("\n"+"="*20+"生草结果"+"="*20+"\n")
     for i in qlist:
         print(f" {i}")
