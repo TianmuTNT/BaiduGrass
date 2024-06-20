@@ -8,6 +8,6 @@
 ### 强烈推荐使用高级版！标准版的请求限速可能不能满足程序的需求！
 
 ## 使用方式
-确保你已经通过某种方式安装了```requests```库（例如```pip install requests```）
+确保你已经通过某种方式安装了```requests```和```pyperclip```库（例如```pip install requests pyperclip```）
 
 然后在开发者信息界面 https://fanyi-api.baidu.com/manage/developer 获取对应的```APP ID```和```密钥```，分别填入变量```appid```和```secretKey```中即可
